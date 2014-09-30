@@ -1,0 +1,11 @@
+[run]
+
+branch = True
+source = ./gitreload
+
+[report]
+exclude_lines =
+    pragma: no cover
+    if __name__ == "__main__":
+    app.debug = True
+    run_web
