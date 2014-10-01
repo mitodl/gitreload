@@ -100,7 +100,7 @@ class ActionCall(object):
         self.repo_name = repo_name
         self.repo_url = repo_url
 
-        if not action_type in self.ACTION_TYPES.values():
+        if action_type not in self.ACTION_TYPES.values():
             raise InvalidGitActionException(
                 'Action must be in ActionCall.ACTION_TYPES'
             )
@@ -121,10 +121,8 @@ class ActionCall(object):
         String representation of class for use in logs and such
         """
         return ('repo_name: {0.repo_name}, repo_url: {0.repo_url}, '
-                'action_type: {1}, kwargs: {2}'.format(
-                    self,
-                    self.action_text,
-                    self.kwargs
+                'action_type: {0.action_text}, kwargs: {0.kwargs}'.format(
+                    self
                 ))
 
 

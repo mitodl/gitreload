@@ -234,7 +234,7 @@ class TestProcessing(GitreloadTestBase):
         open(test_file, 'a').close()
         repo.index.add([test_file])
         repo.index.commit('First Commit')
-        repo.remotes.origin.push()
+        repo.git.push('origin', 'master')
 
         action_call = ActionCall(
             repo_name,

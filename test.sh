@@ -77,7 +77,10 @@ done
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
+echo "Using git version $(git --version)"
+
 nosetests --with-coverage --cover-html --cover-package=$PACKAGE_NAME,$PACKAGE_NAME.tests
+test_results=$?
 
 if $quality; then
 	# Show nice reports
@@ -100,6 +103,11 @@ if $coveralls; then
 	echo "repo_token: $token" > $DIR/.coveralls.yml
 	coveralls
 	rm $DIR/.coveralls.yml
+fi
+
+if [[ $test_results -ne 0 ]]; then
+	echo "Unit tests failed, failing test"
+	exit 1
 fi
 
 if [[ pylint_violations!="" && pylint_violations -gt MAX_PYLINT_VIOLATIONS ]]; then
