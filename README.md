@@ -2,9 +2,10 @@
 gitreload
 =========
 [![Build Status](http://img.shields.io/travis/mitodl/gitreload.svg?style=flat)](https://travis-ci.org/mitodl/gitreload)
-[![Coverage Status](https://coveralls.io/repos/mitodl/gitreload/badge.png?branch=master)](https://coveralls.io/r/mitodl/gitreload)
+[![Coverage Status](http://img.shields.io/coveralls/mitodl/gitreload.svg?style=flat)](https://coveralls.io/r/mitodl/gitreload)
 [![PyPi Downloads](http://img.shields.io/pypi/dm/gitreload.svg?style=flat)](https://pypi.python.org/pypi/gitreload)
 [![PyPi Version](http://img.shields.io/pypi/v/gitreload.svg?style=flat)](https://pypi.python.org/pypi/gitreload)
+[![License AGPLv3](http://img.shields.io/badge/license-AGPv3-blue.svg?style=flat)](http://www.gnu.org/licenses/agpl-3.0.html)
 
 gitreload is a Flask/WSGI application for responding to github
 triggers asynchronously.  Out of the box it is primarily intended for
