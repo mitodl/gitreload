@@ -85,3 +85,41 @@ defaults.  It also leaves the LOG_LEVEL set to the default which
 is `WARNING`, and provides only one worker thread to process the
 queue of received triggers from github.
 
+## Use Cases ##
+
+Currently at MITx this used for a couple primary reasons.
+
+### Rapid Centralized Course Development ###
+
+One of our primary uses of this tool is to enable rapid shared XML
+based edx-platform course development.  It is basically the continuous
+integration piece for our courseware, such that when a commit gets
+pushed to a github repo on a specific branch (say devel) that the
+changes get loaded up automatically and quickly with the use of this
+hook consumer.
+
+### Course Deployment Management ###
+
+Along the lines of the rapid course development, we also use this
+method for controlling which courses get published on our production
+student facing LMS.  For raw github XML developers, this means that we
+hook up our student facing LMS to different branch for production (say
+master or release). We use this to monitor that branch for changes
+they have vetted in their development branch and are ready to deploy
+to students.
+
+We don't limit this to XML developers though, as we use also gate our
+Studio course teams with this same method. There is a feature in the
+platform that allows course teams to export their course to Git. We
+use this function to control student access allowing our Studio course
+authors to push at will to production once the trigger and
+repositories are setup for their course.
+
+### Update of external course graders ###
+
+We use the regular `/update` feature to automatically update external
+code graders that are served via
+[xqueue-watcher](https://github.com/edx/xqueue-watcher) or
+[xserver](https://github.com/edx/xserver).  We use this in a similar
+vain as the previous two cases and manages a development and
+production branch for the repository that contains the graders.
