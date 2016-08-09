@@ -57,7 +57,7 @@ def configure_logging(level_override=None):
     elif os.path.exists('/var/run/syslog'):
         address = '/var/run/syslog'
     else:
-        address = ('127.0.0.1', 514)
+        address = ('127.0.0.1', 514)  # pylint: disable=redefined-variable-type
     # Add syslog handler before adding formatters
     root_logger.addHandler(
         SysLogHandler(address=address, facility=SysLogHandler.LOG_LOCAL0)

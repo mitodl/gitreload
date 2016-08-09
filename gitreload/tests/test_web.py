@@ -9,8 +9,8 @@ import tempfile
 import mock
 from git import Repo
 
-from .base import GitreloadTestBase
 import gitreload.web
+from .base import GitreloadTestBase
 
 
 class TestWebApplication(GitreloadTestBase):

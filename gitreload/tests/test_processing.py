@@ -1,10 +1,10 @@
 """
 Tests related to the processing module
 """
-import mock
 import os
 import shutil
 import subprocess
+import mock
 
 from git import Repo
 
