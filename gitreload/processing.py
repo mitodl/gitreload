@@ -28,7 +28,7 @@ def import_repo(action_call):
         '--settings={0}'.format(settings['DJANGO_SETTINGS']),
         'git_add_course',
         action_call.repo_url,
-        '--directory_path'
+        '--directory_path',
         os.path.join(settings['REPODIR'], action_call.repo_name),
     ]
 
