@@ -1,10 +1,10 @@
 """
 Tests related to the processing module
 """
-import mock
 import os
 import shutil
 import subprocess
+import mock
 
 from git import Repo
 
@@ -90,6 +90,7 @@ class TestProcessing(GitreloadTestBase):
                      '--settings=aws',
                      'git_add_course',
                      'NOTREAL',
+                     '--directory_path',
                      '/mnt/data/repos/NOTREAL'],
                     cwd='/edx/app/edxapp/edx-platform',
                     stderr=-2

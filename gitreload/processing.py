@@ -28,6 +28,7 @@ def import_repo(action_call):
         '--settings={0}'.format(settings['DJANGO_SETTINGS']),
         'git_add_course',
         action_call.repo_url,
+        '--directory_path',
         os.path.join(settings['REPODIR'], action_call.repo_name),
     ]
 
@@ -157,10 +158,12 @@ class GitAction(multiprocessing.Process):
         """
         while True:
             action_call = self.queue.get()
-            log.info('Starting GitAction task {0} out '
-                     'of {1} on thread {2}'.format(
-                         action_call, len(self.queued_jobs), self.thread_num
-                     ))
+            log.info(
+                'Starting GitAction task %s out of %s on thread %s',
+                action_call,
+                len(self.queued_jobs),
+                self.thread_num
+            )
             try:
                 log.debug('Used %s as index to ACTION_COMMANDS',
                           action_call.action_type)
