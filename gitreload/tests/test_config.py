@@ -1,6 +1,7 @@
 """
 Unit tests to validate configuration loading
 """
+import logging
 import os
 import unittest
 import mock
@@ -15,15 +16,21 @@ class TestLogConfiguration(unittest.TestCase):
     """
     # pylint: disable=R0904
 
+    def setUp(self):
+        """
+        Set up method
+        """
+        # reset the log level before each test
+        logger = logging.getLogger()
+        logger.setLevel(logging.WARNING)
+
     def test_log_override(self):
         """
         Make sure we can setup logging with our own level
         """
-        import pdb; pdb.set_trace()
-        import logging
         root_logger = logging.getLogger()
         log_level = root_logger.level
-        self.assertEqual(logging.NOTSET, log_level)
+        self.assertEqual(logging.WARNING, log_level)
 
         from gitreload.config import configure_logging
         log_level = configure_logging(logging.INFO)
@@ -35,10 +42,9 @@ class TestLogConfiguration(unittest.TestCase):
         """
         Patch config and make sure we are setting to it
         """
-        import logging
         root_logger = logging.getLogger()
         log_level = root_logger.level
-        self.assertEqual(logging.NOTSET, log_level)
+        self.assertEqual(logging.WARNING, log_level)
 
         from gitreload.config import configure_logging
         log_level = configure_logging()
@@ -50,10 +56,9 @@ class TestLogConfiguration(unittest.TestCase):
         """
         Set a non-existent log level and make sure we raise properly
         """
-        import logging
         root_logger = logging.getLogger()
         log_level = root_logger.level
-        self.assertEqual(logging.NOTSET, log_level)
+        self.assertEqual(logging.WARNING, log_level)
 
         from gitreload.config import configure_logging
         with self.assertRaisesRegexp(ValueError, 'Invalid log level.+'):
@@ -64,10 +69,9 @@ class TestLogConfiguration(unittest.TestCase):
         """
         Make sure we leave things alone if no log level is set.
         """
-        import logging
         root_logger = logging.getLogger()
         log_level = root_logger.level
-        self.assertEqual(logging.NOTSET, log_level)
+        self.assertEqual(logging.WARNING, log_level)
 
         from gitreload.config import configure_logging
         log_level = configure_logging()
@@ -77,7 +81,6 @@ class TestLogConfiguration(unittest.TestCase):
         """
         Test syslog address handling and handler
         """
-        import logging
 
         for log_device in ['/dev/log', '/var/run/syslog', '']:
             root_logger = logging.getLogger()
