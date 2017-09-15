@@ -1,11 +1,14 @@
 """
 Python setup file for the gitreload flask app.
 """
+# pylint: disable=import-error, invalid-name
+
 import os
 import sys
+from distutils.sysconfig import get_python_lib
 
 from setuptools import setup, find_packages
-from distutils.sysconfig import get_python_lib
+
 
 if "install" in sys.argv:
     lib_paths = [get_python_lib()]

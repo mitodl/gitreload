@@ -72,7 +72,8 @@ class TestProcessing(GitreloadTestBase):
         # Setup default settings, have mock get called on import,
         # check parameters, and have side_effect raise the right Exception
         with mock.patch('gitreload.config.Config') as mock_config:
-            mock_config.configure_mock(**{
+            mock_config.configure_mock(
+                **{
                     'REPODIR': '/mnt/data/repos',
                     'VIRTUAL_ENV': '/edx/app/edxapp/venvs/edxapp',
                     'DJANGO_SETTINGS': 'aws',
@@ -81,7 +82,8 @@ class TestProcessing(GitreloadTestBase):
                     'LINKED_REPOS': {},
                     'ALSO_CLONE_REPOS': {},
                     'NUM_THREADS': 1,
-                })
+                }
+            )
             with mock.patch('subprocess.check_output') as check_output:
                 check_output.side_effect = subprocess.CalledProcessError(
                     10, 'test_command', output='Test output'
@@ -188,7 +190,7 @@ class TestProcessing(GitreloadTestBase):
         workers = start_workers(1)
 
         # Wait for item to be processed
-        while len(queued_jobs) > 0:
+        while len(queued_jobs) > 0:  # pylint: disable=len-as-condition
             pass
 
         # Assert that our side effect worked and was called
