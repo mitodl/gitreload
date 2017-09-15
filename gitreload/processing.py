@@ -169,7 +169,7 @@ class GitAction(multiprocessing.Process):
                           action_call.action_type)
                 self.ACTION_COMMANDS[action_call.action_type](action_call)
             except Exception:  # pylint: disable=W0703
-                log.exception('Failed to run command')
+                log.exception('Failed to run command GitAction')
             finally:
                 self.queued_jobs.pop()
                 self.queue.task_done()
