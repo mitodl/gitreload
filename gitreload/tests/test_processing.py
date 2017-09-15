@@ -273,7 +273,6 @@ class TestProcessing(GitreloadTestBase):
         with mock.patch('gitreload.config.Config.REPODIR', TEST_ROOT):
             git_get_latest(action_call)
         mocked_log.info.assert_called_with(
-            'Updated to latest revision of repo %s. '
-            'Original SHA: %s. Head SHA: %s',
+            'Updated to latest revision of repo %s. Original SHA: %s. Head SHA: %s',
             repo_name, orig_head, repo.head.commit.tree.hexsha
         )
