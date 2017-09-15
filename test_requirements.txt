@@ -3,7 +3,7 @@ coverage
 diff-cover
 pylint
 pep8
-flask
 mock
-GitPython==0.3.2.RC1
 coveralls
+ipython
+pytest

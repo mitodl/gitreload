@@ -150,7 +150,7 @@ class TestWebApplication(GitreloadTestBase):
                                     headers={'X-Github-Event': 'push'})
         self.assertEqual(response.status_code, 500)
 
-    @mock.patch.dict('gitreload.config.settings', {'REPODIR': '/dev/null'})
+    @mock.patch('gitreload.config.Config.REPODIR', '/dev/null')
     def test_bad_repodir(self):
         """
         Test that a bad repodir is handled right
@@ -169,8 +169,7 @@ class TestWebApplication(GitreloadTestBase):
         Test to confirm that we don't want to clone repos that haven't
         already been checked out.
         """
-        with mock.patch.dict('gitreload.config.settings',
-                             {'REPODIR': self.tmpdir}):
+        with mock.patch('gitreload.config.Config.REPODIR', self.tmpdir):
             response = self.client.post(
                 self.HOOK_COURSE_URL,
                 data={
@@ -198,8 +197,7 @@ class TestWebApplication(GitreloadTestBase):
         commit = repo.index.commit('test commit')
         repo.git.checkout(commit.hexsha)
 
-        with mock.patch.dict('gitreload.config.settings',
-                             {'REPODIR': self.tmpdir}):
+        with mock.patch('gitreload.config.Config.REPODIR', self.tmpdir):
             response = self.client.post(
                 self.HOOK_COURSE_URL,
                 data={
@@ -220,8 +218,7 @@ class TestWebApplication(GitreloadTestBase):
         repo_name = 'test'
         self._make_repo(repo_name)
 
-        with mock.patch.dict('gitreload.config.settings',
-                             {'REPODIR': self.tmpdir}):
+        with mock.patch('gitreload.config.Config.REPODIR', self.tmpdir):
             response = self.client.post(
                 self.HOOK_COURSE_URL,
                 data={
@@ -244,8 +241,7 @@ class TestWebApplication(GitreloadTestBase):
 
         self.assertEqual(len(gitreload.web.queued_jobs), 0)
 
-        with mock.patch.dict('gitreload.config.settings',
-                             {'REPODIR': self.tmpdir}):
+        with mock.patch('gitreload.config.Config.REPODIR', self.tmpdir):
             response = self.client.post(
                 self.HOOK_COURSE_URL,
                 data={
@@ -275,8 +271,7 @@ class TestWebApplication(GitreloadTestBase):
 
         self.assertEqual(len(gitreload.web.queued_jobs), 0)
 
-        with mock.patch.dict('gitreload.config.settings',
-                             {'REPODIR': self.tmpdir}):
+        with mock.patch('gitreload.config.Config.REPODIR', self.tmpdir):
             response = self.client.post(
                 self.HOOK_COURSE_URL,
                 data=self._make_payload(repo_name, 'master'),
@@ -319,8 +314,7 @@ class TestWebApplication(GitreloadTestBase):
 
         self.assertEqual(len(gitreload.web.queued_jobs), 0)
 
-        with mock.patch.dict('gitreload.config.settings',
-                             {'REPODIR': self.tmpdir}):
+        with mock.patch('gitreload.config.Config.REPODIR', self.tmpdir):
             response = self.client.post(
                 self.HOOK_GET_LATEST_URL,
                 data={
@@ -344,8 +338,7 @@ class TestWebApplication(GitreloadTestBase):
         Validate with simple test that update is protected
         by same git hook validation code that course import is.
         """
-        with mock.patch.dict('gitreload.config.settings',
-                             {'REPODIR': self.tmpdir}):
+        with mock.patch('gitreload.config.Config.REPODIR', self.tmpdir):
             response = self.client.post(
                 self.HOOK_GET_LATEST_URL,
                 data={

@@ -8,7 +8,7 @@ import mock
 
 from git import Repo
 
-from .base import GitreloadTestBase, TEST_ROOT
+from gitreload.tests.base import GitreloadTestBase, TEST_ROOT
 
 
 class TestProcessing(GitreloadTestBase):
@@ -49,8 +49,7 @@ class TestProcessing(GitreloadTestBase):
         from gitreload.processing import import_repo, ActionCall
 
         # Call with bad edx-platform path to prevent actual execution
-        with mock.patch.dict('gitreload.config.settings',
-                             {'EDX_PLATFORM': '/dev/null'}):
+        with mock.patch('gitreload.config.Config.EDX_PLATFORM', '/dev/null'):
             import_repo(ActionCall(
                 'NOTREAL', 'NOTREAL',
                 ActionCall.ACTION_TYPES['COURSE_IMPORT']
@@ -69,12 +68,20 @@ class TestProcessing(GitreloadTestBase):
         # pylint: disable=R0201
 
         from gitreload.processing import import_repo, ActionCall
-        from .test_config import TestConfiguration
 
         # Setup default settings, have mock get called on import,
         # check parameters, and have side_effect raise the right Exception
-        with mock.patch.dict('gitreload.config.settings',
-                             TestConfiguration.DEFAULT_CONFIG_EXPECT):
+        with mock.patch('gitreload.config.Config') as mock_config:
+            mock_config.configure_mock(**{
+                    'REPODIR': '/mnt/data/repos',
+                    'VIRTUAL_ENV': '/edx/app/edxapp/venvs/edxapp',
+                    'DJANGO_SETTINGS': 'aws',
+                    'EDX_PLATFORM': '/edx/app/edxapp/edx-platform',
+                    'LOG_LEVEL': None,
+                    'LINKED_REPOS': {},
+                    'ALSO_CLONE_REPOS': {},
+                    'NUM_THREADS': 1,
+                })
             with mock.patch('subprocess.check_output') as check_output:
                 check_output.side_effect = subprocess.CalledProcessError(
                     10, 'test_command', output='Test output'
@@ -243,8 +250,7 @@ class TestProcessing(GitreloadTestBase):
             ActionCall.ACTION_TYPES['GET_LATEST']
         )
 
-        with mock.patch.dict('gitreload.config.settings',
-                             {'REPODIR': TEST_ROOT}):
+        with mock.patch('gitreload.config.Config.REPODIR', TEST_ROOT):
             git_get_latest(action_call)
 
         mocked_log.warn.assert_called_with(
@@ -262,8 +268,7 @@ class TestProcessing(GitreloadTestBase):
         repo.remotes.origin.push()
 
         repo.head.reset(index=True, commit='HEAD~1', working_tree=True)
-        with mock.patch.dict('gitreload.config.settings',
-                             {'REPODIR': TEST_ROOT}):
+        with mock.patch('gitreload.config.Config.REPODIR', TEST_ROOT):
             git_get_latest(action_call)
         mocked_log.info.assert_called_with(
             'Updated to latest revision of repo %s. '
