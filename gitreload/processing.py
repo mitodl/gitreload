@@ -6,7 +6,7 @@ incluydes the workers and import task.
 import logging
 import multiprocessing
 import os
-import subprocess
+import subprocess32
 
 from git import Repo
 
@@ -35,13 +35,16 @@ def import_repo(action_call):
     log.info('Beginning import of course repo %s with command %s',
              action_call.repo_name, ' '.join(cmd))
     try:
-        import_process = subprocess.check_output(
+        import_process = subprocess32.check_output(
             cmd,
             cwd=config.Config.EDX_PLATFORM,
-            stderr=subprocess.STDOUT
+            stderr=subprocess32.STDOUT,
+            timeout=config.Config.SUBPROCESS_TIMEOUT,
         )
-    except subprocess.CalledProcessError as ex:
-        log.exception('Import command failed with: %s', ex.output)
+    except subprocess32.CalledProcessError as exc:
+        log.exception('Import command failed with: %s', exc.output)
+    except subprocess32.TimeoutExpired as exc:
+        log.exception('Import command timed out after %s seconds with: %s', exc.timeout, exc.output)
     except OSError as ex:
         log.exception('System or configuration error occurred: %s', str(ex))
     else:
