@@ -188,23 +188,6 @@ def get_queue_length():
     return json.dumps(queue_object)
 
 
-@app.route('/queue/pop_first', methods=['GET'])
-def pop_first_in_queue():
-    """
-    Removes the first item from the queue and returns it
-    """
-    # Format ActionCall to a dictionary for serializing
-    job_list = []
-    for item in queued_jobs:
-        job_list.append({
-            'repo_name': item.repo_name,
-            'repo_url': item.repo_url,
-            'action': item.action_text
-        })
-    queue_object = {'queue_length': len(queued_jobs), 'queue': job_list}
-    return json.dumps(queue_object)
-
-
 # Application startup configuration
 configure_logging()
 workers = start_workers(Config.NUM_THREADS)  # pylint: disable=C0103
