@@ -9,7 +9,7 @@ from multiprocessing import JoinableQueue, Manager
 from flask import Flask, request, Response
 from git import Repo, InvalidGitRepositoryError, NoSuchPathError
 
-from gitreload.config import settings, configure_logging
+from gitreload.config import Config, configure_logging
 from gitreload.processing import GitAction, ActionCall
 
 
@@ -78,14 +78,14 @@ def verify_hook():
 
     # Check that repo is already checked out as that is our method for
     # validating this repo is good to pull.
-    if not os.path.isdir(settings['REPODIR']):
-        log.critical("Repo directory %s doesn't exist", settings['REPODIR'])
+    if not os.path.isdir(Config.REPODIR):
+        log.critical("Repo directory %s doesn't exist", Config.REPODIR)
         return Response(json_dump_msg('Server configuration issue'), 500), None
 
     # Get GitPython repo object from disk
     try:
-        repo = Repo(os.path.join(settings['REPODIR'], repo_name))
-    except (InvalidGitRepositoryError, NoSuchPathError):
+        repo = Repo(os.path.join(Config.REPODIR, repo_name))
+    except (InvalidGitRepositoryError, NoSuchPathError, ):
         log.critical('Repository %s (%s) not in list of available '
                      'repositories', repo_name, owner)
         return Response(json_dump_msg('Repository not valid'), 500), None
@@ -190,7 +190,7 @@ def get_queue_length():
 
 # Application startup configuration
 configure_logging()
-workers = start_workers(settings['NUM_THREADS'])  # pylint: disable=C0103
+workers = start_workers(Config.NUM_THREADS)  # pylint: disable=C0103
 
 
 # Manual startup overrides (e.g. command line or direct run).

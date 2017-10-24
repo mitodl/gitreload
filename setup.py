@@ -1,11 +1,14 @@
 """
-Primarily jacked from Django's setup.py
+Python setup file for the gitreload flask app.
 """
+# pylint: disable=import-error, invalid-name
+
 import os
 import sys
+from distutils.sysconfig import get_python_lib
 
 from setuptools import setup, find_packages
-from distutils.sysconfig import get_python_lib
+
 
 if "install" in sys.argv:
     lib_paths = [get_python_lib()]
@@ -16,28 +19,27 @@ if "install" in sys.argv:
     for lib_path in lib_paths:
         existing_path = os.path.abspath(os.path.join(lib_path, "gitreload"))
 
-EXCLUDE_FROM_PACKAGES = []
-
 version = __import__('gitreload').VERSION
+
+install_requires = open('requirements.txt').read().splitlines()
 
 setup(
     name='gitreload',
     version=version,
     url='https://github.com/mitodl/gitreload',
-    author='MITx',
+    author='MIT Office of Digital Learning',
     author_email='mitx-devops@mit.edu',
     description=('Github Web hook consumer for reloading '
                  'courses in edx-platform, or generally '
                  'updating local repositories'),
     license='AGPLv3',
-    packages=find_packages(exclude=EXCLUDE_FROM_PACKAGES),
+    packages=find_packages(),
     include_package_data=True,
     entry_points={'console_scripts': [
         'gitreload = gitreload.web:run_web',
     ]},
     zip_safe=True,
-    requires=('flask', 'gunicorn', 'GitPython', ),
-    install_requires=['flask', 'gunicorn', 'GitPython==0.3.2.RC1', ],
+    install_requires=install_requires,
     data_files=[],
     classifiers=[
         'Development Status :: 3 - Alpha',

@@ -6,11 +6,11 @@ incluydes the workers and import task.
 import logging
 import multiprocessing
 import os
-import subprocess
+import subprocess32
 
 from git import Repo
 
-from gitreload.config import settings
+from gitreload import config
 
 log = logging.getLogger('gitreload')  # pylint: disable=C0103
 
@@ -22,26 +22,29 @@ def import_repo(action_call):
     """
     os.environ['SERVICE_VARIANT'] = 'lms'
     cmd = [
-        '{0}/bin/python'.format(settings['VIRTUAL_ENV']),
+        '{0}/bin/python'.format(config.Config.VIRTUAL_ENV),
         'manage.py',
         'lms',
-        '--settings={0}'.format(settings['DJANGO_SETTINGS']),
+        '--settings={0}'.format(config.Config.DJANGO_SETTINGS),
         'git_add_course',
         action_call.repo_url,
         '--directory_path',
-        os.path.join(settings['REPODIR'], action_call.repo_name),
+        os.path.join(config.Config.REPODIR, action_call.repo_name),
     ]
 
     log.info('Beginning import of course repo %s with command %s',
              action_call.repo_name, ' '.join(cmd))
     try:
-        import_process = subprocess.check_output(
+        import_process = subprocess32.check_output(
             cmd,
-            cwd=settings['EDX_PLATFORM'],
-            stderr=subprocess.STDOUT
+            cwd=config.Config.EDX_PLATFORM,
+            stderr=subprocess32.STDOUT,
+            timeout=config.Config.SUBPROCESS_TIMEOUT,
         )
-    except subprocess.CalledProcessError as ex:
-        log.exception('Import command failed with: %s', ex.output)
+    except subprocess32.CalledProcessError as exc:
+        log.exception('Import command failed with: %s', exc.output)
+    except subprocess32.TimeoutExpired as exc:
+        log.exception('Import command timed out after %s seconds with: %s', exc.timeout, exc.output)
     except OSError as ex:
         log.exception('System or configuration error occurred: %s', str(ex))
     else:
@@ -54,7 +57,7 @@ def git_get_latest(action_call):
     and `git reset --hard origin/<repo_branch>`
     on the passed in repo.
     """
-    repo = Repo(os.path.join(settings['REPODIR'], action_call.repo_name))
+    repo = Repo(os.path.join(config.Config.REPODIR, action_call.repo_name))
     # Grab HEAD sha to see if we actually are updating
     orig_head = repo.head.commit.tree.hexsha
     repo.git.fetch('--all')
@@ -169,7 +172,7 @@ class GitAction(multiprocessing.Process):
                           action_call.action_type)
                 self.ACTION_COMMANDS[action_call.action_type](action_call)
             except Exception:  # pylint: disable=W0703
-                log.exception('Failed to run command')
+                log.exception('Failed to run command GitAction')
             finally:
                 self.queued_jobs.pop()
                 self.queue.task_done()
