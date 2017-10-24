@@ -28,7 +28,7 @@ class Config(object):
                      '%(filename)s:%(lineno)d - '
                      '{hostname}- %(message)s').format(hostname=HOSTNAME)
     LOG_FILE_PATH = os.environ.get('LOG_FILE_PATH', '')
-    SUBPROCESS_TIMEOUT = int(os.environ.get('SUBPROCESS_TIMEOUT', 60)) * MINUTE
+    SUBPROCESS_TIMEOUT = int(os.environ.get('SUBPROCESS_TIMEOUT_MINUTES', 60)) * MINUTE
 
 
 def configure_logging(level_override=None, config=Config):
