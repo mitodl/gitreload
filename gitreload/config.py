@@ -2,7 +2,7 @@
 Setup configuration from a json file with defaults
 """
 import logging
-from logging.handlers import SysLogHandler
+from logging.handlers import RotatingFileHandler
 import os
 import platform
 
@@ -58,18 +58,16 @@ def configure_logging(level_override=None, config=Config):
     root_logger = logging.getLogger()
     root_logger.setLevel(set_level)
 
+    address = None
     if config.LOG_FILE_PATH:
         address = config.LOG_FILE_PATH
     elif os.path.exists('/dev/log'):
         address = '/dev/log'
-    elif os.path.exists('/var/run/syslog'):
-        address = '/var/run/syslog'
-    else:
-        address = ('127.0.0.1', 514)  # pylint: disable=bad-option-value
-    # Add syslog handler before adding formatters
-    root_logger.addHandler(
-        SysLogHandler(address=address, facility=SysLogHandler.LOG_LOCAL0)
-    )
+
+    if address:
+        root_logger.addHandler(
+            RotatingFileHandler(address, maxBytes=1048576, backupCount=10)
+        )
 
     for handler in root_logger.handlers:
         handler.setFormatter(logging.Formatter(config.LOG_FORMATTER))
