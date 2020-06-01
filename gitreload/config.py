@@ -2,16 +2,17 @@
 Setup configuration from a json file with defaults
 """
 import logging
-from logging.handlers import RotatingFileHandler
 import os
 import platform
+from logging.handlers import RotatingFileHandler
+from pathlib import Path
 
 log = logging.getLogger('gitreload')  # pylint: disable=C0103
 
 MINUTE = 60  # seconds
 
 
-class Config(object):
+class Config:
     """
     Configuration for the app
     """
@@ -61,7 +62,7 @@ def configure_logging(level_override=None, config=Config):
     address = None
     if config.LOG_FILE_PATH:
         address = config.LOG_FILE_PATH
-    elif os.path.exists('/dev/log'):
+    elif Path('/dev/log').is_file():
         address = '/dev/log'
 
     if address:

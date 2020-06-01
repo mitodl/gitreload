@@ -1,0 +1,45 @@
+[tool.poetry]
+name = "gitreload"
+version = "0.2.0"
+description = "Service for triggering edX course imports from Github webhooks"
+authors = ["MIT Open Learning <mitx-devops@mit.edu>"]
+license = "AGPL-3.0"
+readme = "README.md"
+repository = "https://github.com/mitodl/gitreload"
+classifiers=[
+    'Development Status :: 3 - Alpha',
+    'Environment :: Web Environment',
+    'Framework :: Flask',
+    'Intended Audience :: Developers',
+    'Operating System :: OS Independent',
+    'Programming Language :: Python',
+    'Programming Language :: Python :: 3',
+    'Programming Language :: Python :: 3.6',
+    'Topic :: Education',
+]
+
+[tool.poetry.plugins.console_scripts]
+"gitreload" = "gitreload.web:run_web"
+
+[tool.poetry.dependencies]
+python = "^3.6"
+flask = "^1.1.2"
+gunicorn = "^20.0.4"
+gitpython = "^3.1.3"
+
+[tool.poetry.dev-dependencies]
+coverage = "^5.1"
+coveralls = "^2.0.0"
+diff-cover = "^2.6.1"
+ipython = "^7.15.0"
+mock = "^4.0.2"
+pep8 = "^1.7.1"
+pylint = "^2.5.2"
+pytest = "^5.4.2"
+pytest-cov = "^2.9.0"
+pytest-pep8 = "^1.0.6"
+pytest-pylint = "^0.17.0"
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
