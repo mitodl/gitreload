@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "gitreload"
-version = "0.2.0"
+version = "0.2.2"
 description = "Service for triggering edX course imports from Github webhooks"
 authors = ["MIT Open Learning <mitx-devops@mit.edu>"]
 license = "AGPL-3.0"
@@ -22,7 +22,7 @@ classifiers=[
 gitreload = "gitreload.web:run_web"
 
 [tool.poetry.dependencies]
-python = "^3.6"
+python = "^3.5"
 flask = "^1.1.2"
 gunicorn = "^20.0.4"
 gitpython = "^3.1.3"
