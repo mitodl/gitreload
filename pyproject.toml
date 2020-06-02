@@ -18,8 +18,8 @@ classifiers=[
     'Topic :: Education',
 ]
 
-[tool.poetry.plugins.console_scripts]
-"gitreload" = "gitreload.web:run_web"
+[tool.poetry.scripts]
+gitreload = "gitreload.web:run_web"
 
 [tool.poetry.dependencies]
 python = "^3.6"
