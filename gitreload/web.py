@@ -123,8 +123,6 @@ def hook_receive():
     return_value, repo_name = verify_hook()
     if not repo_name:
         return return_value
-    else:
-        repo = return_value
 
     log.debug('Local and remote branch match, scheduling action')
 
@@ -132,7 +130,7 @@ def hook_receive():
     # to prevent timeouts.
     action = ActionCall(
         repo_name,
-        repo.remotes.origin.url,
+        return_value.remotes.origin.url,
         ActionCall.ACTION_TYPES['COURSE_IMPORT']
     )
     queued_jobs.append(action)
@@ -152,8 +150,6 @@ def update_repo():
     return_value, repo_name = verify_hook()
     if not repo_name:
         return return_value
-    else:
-        repo = return_value
 
     log.debug('Local and remote branch match, doing pull')
 
@@ -161,7 +157,7 @@ def update_repo():
     # to prevent timeouts.
     action = ActionCall(
         repo_name,
-        repo.remotes.origin.url,
+        return_value.remotes.origin.url,
         ActionCall.ACTION_TYPES['GET_LATEST']
     )
     queued_jobs.append(action)

@@ -1,6 +1,7 @@
 """
 Test out the flask Web application
 """
+# pylint: disable=import-outside-toplevel
 import json
 import os
 import shutil
@@ -10,7 +11,7 @@ import mock
 from git import Repo
 
 import gitreload.web
-from .base import GitreloadTestBase
+from gitreload.tests.base import GitreloadTestBase
 
 
 class TestWebApplication(GitreloadTestBase):
@@ -71,7 +72,7 @@ class TestWebApplication(GitreloadTestBase):
         """
         from gitreload.web import json_dump_msg
         json_dump = json_dump_msg('Test')
-        self.assertEquals(json.loads(json_dump), {'msg':  'Test'})
+        self.assertEqual(json.loads(json_dump), {'msg':  'Test'})
 
     def test_queue_status_page(self):
         """
@@ -97,9 +98,9 @@ class TestWebApplication(GitreloadTestBase):
         self.assertEqual(
             json_data['queue'],
             [{
-                'repo_name': u'testing',
-                'repo_url': u'http://example.com/testing.git',
-                'action': u'COURSE_IMPORT'
+                'repo_name': 'testing',
+                'repo_url': 'http://example.com/testing.git',
+                'action': 'COURSE_IMPORT'
             }])
         # Clean up queue
         queued_jobs.pop()

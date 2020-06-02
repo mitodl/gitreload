@@ -6,7 +6,7 @@ incluydes the workers and import task.
 import logging
 import multiprocessing
 import os
-import subprocess32
+import subprocess
 
 from git import Repo
 
@@ -35,15 +35,15 @@ def import_repo(action_call):
     log.info('Beginning import of course repo %s with command %s',
              action_call.repo_name, ' '.join(cmd))
     try:
-        import_process = subprocess32.check_output(
+        import_process = subprocess.check_output(
             cmd,
             cwd=config.Config.EDX_PLATFORM,
-            stderr=subprocess32.STDOUT,
+            stderr=subprocess.STDOUT,
             timeout=config.Config.SUBPROCESS_TIMEOUT,
         )
-    except subprocess32.CalledProcessError as exc:
+    except subprocess.CalledProcessError as exc:
         log.exception('Import command failed with: %s', exc.output)
-    except subprocess32.TimeoutExpired as exc:
+    except subprocess.TimeoutExpired as exc:
         log.exception('Import command timed out after %s seconds with: %s', exc.timeout, exc.output)
     except OSError as ex:
         log.exception('System or configuration error occurred: %s', str(ex))
@@ -68,8 +68,8 @@ def git_get_latest(action_call):
     repo.git.clean('-xdf')
     new_head = repo.head.commit.tree.hexsha
     if new_head == orig_head:
-        log.warn('Attempted update of %s at HEAD %s, but no updates',
-                 action_call.repo_name, orig_head)
+        log.warning('Attempted update of %s at HEAD %s, but no updates',
+                    action_call.repo_name, orig_head)
     else:
         log.info('Updated to latest revision of repo %s. '
                  'Original SHA: %s. Head SHA: %s',
@@ -81,10 +81,9 @@ class InvalidGitActionException(Exception):
     Catachable exception for when an invalid
     action is requested in init.
     """
-    pass
 
 
-class ActionCall(object):
+class ActionCall:
     """
     Class structure for passing to processing queue
     """
@@ -104,7 +103,7 @@ class ActionCall(object):
         self.repo_name = repo_name
         self.repo_url = repo_url
 
-        if action_type not in self.ACTION_TYPES.values():
+        if action_type not in list(self.ACTION_TYPES.values()):
             raise InvalidGitActionException(
                 'Action must be in ActionCall.ACTION_TYPES'
             )
@@ -116,7 +115,7 @@ class ActionCall(object):
         """
         Get the text representation of the action
         """
-        action_type = [key for key, value in self.ACTION_TYPES.items()
+        action_type = [key for key, value in list(self.ACTION_TYPES.items())
                        if value == self.action_type]
         return action_type[0]
 

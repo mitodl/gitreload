@@ -1,6 +1,7 @@
 """
 Define a base classes for testing
 """
+# pylint: disable=import-outside-toplevel
 import os
 from multiprocessing import JoinableQueue
 import unittest

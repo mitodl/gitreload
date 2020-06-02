@@ -21,7 +21,9 @@ if "install" in sys.argv:
 
 version = __import__('gitreload').VERSION
 
-install_requires = open('requirements.txt').read().splitlines()
+install_requires = ['flask==1.*,>=1.1.2',
+                    'gitpython==3.*,>=3.1.3',
+                    'gunicorn==20.*,>=20.0.4']
 
 setup(
     name='gitreload',
@@ -50,8 +52,8 @@ setup(
          'General Public License v3 or later (AGPLv3+)'),
         'Operating System :: OS Independent',
         'Programming Language :: Python',
-        'Programming Language :: Python :: 2',
-        'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.6',
         'Topic :: Education',
     ],
 )

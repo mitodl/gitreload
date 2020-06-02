@@ -1,9 +1,10 @@
 """
 Tests related to the processing module
 """
+# pylint: disable=import-outside-toplevel
 import os
 import shutil
-import subprocess32
+import subprocess
 import mock
 
 from git import Repo
@@ -56,7 +57,7 @@ class TestProcessing(GitreloadTestBase):
             ))
         mocked_logging.exception.assert_called_with(
             'System or configuration error occurred: %s',
-            "[Errno 20] Not a directory"
+            "[Errno 20] Not a directory: '/dev/null'"
         )
 
     @mock.patch('gitreload.processing.log')
@@ -85,8 +86,8 @@ class TestProcessing(GitreloadTestBase):
                     'SUBPROCESS_TIMEOUT': 59,
                 }
             )
-            with mock.patch('subprocess32.check_output') as check_output:
-                check_output.side_effect = subprocess32.CalledProcessError(
+            with mock.patch('subprocess.check_output') as check_output:
+                check_output.side_effect = subprocess.CalledProcessError(
                     10, 'test_command', output='Test output'
                 )
                 import_repo(ActionCall(
@@ -124,7 +125,7 @@ class TestProcessing(GitreloadTestBase):
 
         # Have mock get called on import and check parameters and have
         # return raise the right Exception
-        with mock.patch('subprocess32.check_output') as check_output:
+        with mock.patch('subprocess.check_output') as check_output:
             check_output.return_value = "Test Success"
             import_repo(ActionCall(
                 'NOTREAL', 'NOTREAL',
@@ -146,8 +147,8 @@ class TestProcessing(GitreloadTestBase):
         from gitreload.processing import import_repo, ActionCall
 
         # Call with bad edx-platform path to prevent actual execution
-        with mock.patch('subprocess32.check_output') as check_output:
-            check_output.side_effect = subprocess32.TimeoutExpired(cmd='ls', output='foooo', timeout=39)
+        with mock.patch('subprocess.check_output') as check_output:
+            check_output.side_effect = subprocess.TimeoutExpired(cmd='ls', output='foooo', timeout=39)
             import_repo(ActionCall(
                 'NOTREAL', 'NOTREAL',
                 ActionCall.ACTION_TYPES['COURSE_IMPORT']
@@ -276,7 +277,7 @@ class TestProcessing(GitreloadTestBase):
         with mock.patch('gitreload.config.Config.REPODIR', TEST_ROOT):
             git_get_latest(action_call)
 
-        mocked_log.warn.assert_called_with(
+        mocked_log.warning.assert_called_with(
             'Attempted update of %s at HEAD %s, but no updates',
             repo_name, repo.head.commit.tree.hexsha
         )
