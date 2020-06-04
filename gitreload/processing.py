@@ -21,7 +21,7 @@ def import_repo(action_call):
     installation.
     """
     os.environ['SERVICE_VARIANT'] = 'lms'
-    os.environ['LMS_CFG'] = config.Config.DJANGO_SETTINGS
+    os.environ['LMS_CFG'] = config.Config.LMS_CFG
     cmd = [
         '{0}/bin/python'.format(config.Config.VIRTUAL_ENV),
         'manage.py',
