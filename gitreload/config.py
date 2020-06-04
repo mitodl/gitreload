@@ -18,7 +18,7 @@ class Config:
     """
     REPODIR = os.environ.get('REPODIR', '/mnt/data/repos')
     VIRTUAL_ENV = os.environ.get('VIRTUAL_ENV', '/edx/app/edxapp/venvs/edxapp')
-    DJANGO_SETTINGS = os.environ.get('DJANGO_SETTINGS', 'aws')
+    DJANGO_SETTINGS = os.environ.get('DJANGO_SETTINGS', 'production')
     EDX_PLATFORM = os.environ.get('EDX_PLATFORM', '/edx/app/edxapp/edx-platform')
     LINKED_REPOS = os.environ.get('LINKED_REPOS', {})
     ALSO_CLONE_REPOS = os.environ.get('ALSO_CLONE_REPOS', {})
