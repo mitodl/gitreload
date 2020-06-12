@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "gitreload"
-version = "0.2.4"
+version = "0.2.5"
 description = "Service for triggering edX course imports from Github webhooks"
 authors = ["MIT Open Learning <mitx-devops@mit.edu>"]
 license = "AGPL-3.0"

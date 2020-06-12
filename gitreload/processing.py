@@ -22,6 +22,7 @@ def import_repo(action_call):
     """
     os.environ['SERVICE_VARIANT'] = 'lms'
     os.environ['LMS_CFG'] = config.Config.LMS_CFG
+    os.environ['REVISION_CFG'] = config.Config.REVISION_CFG
     cmd = [
         '{0}/bin/python'.format(config.Config.VIRTUAL_ENV),
         'manage.py',

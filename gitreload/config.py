@@ -18,7 +18,8 @@ class Config:
     """
     REPODIR = os.environ.get('REPODIR', '/mnt/data/repos')
     VIRTUAL_ENV = os.environ.get('VIRTUAL_ENV', '/edx/app/edxapp/venvs/edxapp')
-    LMS_CFG = os.environ.get('LMS_CFG', '/edx/app/lms.yml')
+    LMS_CFG = os.environ.get('LMS_CFG', '/edx/etc/lms.yml')
+    REVISION_CFG = os.environ.get('REVISION_CFG', '/edx/etc/revisions.yml')
     DJANGO_SETTINGS = os.environ.get('DJANGO_SETTINGS', 'production')
     EDX_PLATFORM = os.environ.get('EDX_PLATFORM', '/edx/app/edxapp/edx-platform')
     LINKED_REPOS = os.environ.get('LINKED_REPOS', {})
